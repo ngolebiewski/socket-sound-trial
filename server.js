@@ -5,6 +5,7 @@ import { dirname, join } from 'node:path';
 import { Server } from 'socket.io';
 import cors from 'cors';
 import morgan from 'morgan';
+import 'dotenv/config';
 
 const app = express();
 app.use(cors());
@@ -19,24 +20,18 @@ const io = new Server(server, {
   connectionStateRecovery: {}
 });
 
+console.log(process.env.NODE_ENV )
+
 if (process.env.NODE_ENV !== 'production') {
   io.listen(5173)
+  console.log("on DEV server")
 }
-
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-
-// Serve static files from the React app
-// if (process.env.NODE_ENV === 'production') {
-//   app.use(express.static(join(__dirname)));
-//   app.get('*', (req, res) => {
-//     res.sendFile(join(__dirname, 'dist', 'index.html')); // Ensure 'index.html' is a string
-//   });
-// }
-
 if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(join(__dirname, 'dist')));
   app.get('*', (req, res) => {
-    res.sendFile('index.html'); // Ensure 'index.html' is a string
+    res.sendFile(join(__dirname, 'dist', 'index.html'));
   });
 }
 
