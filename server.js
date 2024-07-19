@@ -25,11 +25,18 @@ if (process.env.NODE_ENV !== 'production') {
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
+
 // Serve static files from the React app
+// if (process.env.NODE_ENV === 'production') {
+//   app.use(express.static(join(__dirname)));
+//   app.get('*', (req, res) => {
+//     res.sendFile(join(__dirname, 'dist', 'index.html')); // Ensure 'index.html' is a string
+//   });
+// }
+
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(join(__dirname)));
   app.get('*', (req, res) => {
-    res.sendFile(join(__dirname, 'index.html'));
+    res.sendFile('index.html'); // Ensure 'index.html' is a string
   });
 }
 
